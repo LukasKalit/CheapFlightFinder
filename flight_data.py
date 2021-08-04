@@ -21,7 +21,7 @@ class FlightData:
     def search_flights(self, destination_city):
 
         kiwi_dotpoint = "https://tequila-api.kiwi.com/v2/search"
-        kiwi_params = {
+        self.kiwi_params = {
             "fly_from": MAIN_AIRPORT,
             "fly_to": destination_city,
             "date_from": self.now.date(),
@@ -36,8 +36,21 @@ class FlightData:
 
         headers = {"apikey": API_KEY_KIWI}
 
-        response_flights = requests.get(url=kiwi_dotpoint, params=kiwi_params, headers=headers)
+        response_flights = requests.get(url=kiwi_dotpoint, params=self.kiwi_params, headers=headers)
         # print(response_flights.text)
-        flight_data = response_flights.json()
-        return flight_data
+        try:
+            flight_data = response_flights.json()['data'][0]
+            return flight_data
+        except IndexError:
+            try:
+                self.kiwi_params["max_stopovers"] = 1
+                response_flights = requests.get(url=kiwi_dotpoint, params=self.kiwi_params, headers=headers)
+                flight_data = response_flights.json()['data'][0]
+                return flight_data
+            except IndexError:
+                return None
+
+
+
+
 

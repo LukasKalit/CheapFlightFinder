@@ -11,13 +11,12 @@ API_KEY_KIWI = os.getenv("api_key_kiwi")
 # This class is responsible for talking to the Flight Search API.
 
 
-class FlightSearch:
+class FlightIATA:
 
     def __init__(self):
         self.now = datetime.now()
         sixth_month = timedelta(days=180)
         self.sixth_month_later = self.now + sixth_month
-
 
     def search_cities(self, city):
 

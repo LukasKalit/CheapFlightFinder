@@ -26,3 +26,4 @@ class DataManager:
             }
         }
         response = requests.put(url=sheety_dotpoint_update, json=params, headers=self.headers)
+        response.raise_for_status()
